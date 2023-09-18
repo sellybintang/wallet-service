@@ -93,22 +93,33 @@ Schema({
 ## - `Functions`
 ### * Function Activities
 ```javascript
+// ambil seluruh aktivitas dari user id
 router.get("/aktivitasku/:user_id", auth.Verify, ctl.getActivities);
+// ambil 5 aktivitas terakhir berdasarkan user id
 router.get("/riwayatTerakhir/:user_id", auth.Verify, ctl.getLastActivities);
+// ambil seluruh aktivitas yang bertipe 'debit'
 router.get("/riwayatMasuk/:user_id", auth.Verify, ctl.getMasuk);
+// ambil seluruh aktivitas yang bertipe 'debit' dan status ditolak
 router.get("/riwayatKeluar/:user_id", auth.Verify, ctl.getKeluar);
+// ambil seluruh aktivitas yang bertipe 'pengajuan', jika ada status di query ambil dari status, jika tidak maka ambil yang statusnya ditolak/diterima
 router.get("/daftarPengajuan/", auth.Verify, ctl.getDaftarPengajuan);
+// ambil seluruh aktivitas yang bertipe 'pengajuan' status ditolak/diterima dari user id
 router.get(
   "/daftarPengajuan/:user_id",
   auth.Verify,
   ctl.getDaftarPengajuanUser
 );
+// ambil seluruh aktivitas yang bertipe 'pengajuan' status ditolak/diterima dari withdraw_id
 router.get("/dataPengajuan/:withdraw_id", auth.Verify, ctl.getDataPengajuan);
+// ambil seluruh aktivitas yang bertipe 'pengajuan' status diterima/ditolak
 router.get("/riwayatPengajuan", auth.Verify, ctl.getRiwayatPengajuan);
-router.get("/cetakSuratPerintah/:withdraw_id", ctl.cetakSuratPerintah);
+// membuat aktivitas bertipe kredit dengan var { jumlah, keterangan } dari body
 router.post("/kredit/:user_id", auth.Verify, ctl.kredit);
+// membuat aktivitas bertipe debit dengan var { jumlah, keterangan, name } dari body
 router.post("/debit/:user_id", auth.Verify, ctl.debit);
+// membuat aktivitas bertipe pengajuan dengan var { nama_agen, nama, bank, no_rekening, jumlah, keterangan } dari body
 router.post("/ajukanPenarikan/:user_id", auth.Verify, ctl.ajukanPenarikan);
+// mengubah aktivitas dengan var { status, bukti_transfer, updated_by } dari body
 router.patch("/ubahPengajuan/:withdraw_id", auth.Verify, ctl.ubahPengajuan);
 ```
 ### * Function Wallet
