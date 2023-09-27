@@ -5,10 +5,9 @@ const fs = require("fs");
 const ajukanPenarikan = async (req, res) => {
   try {
     const { uid } = req.user;
-    const bukti = req.file.originalname;
 
     console.log(req.file);
-    console.log(bukti);
+
     const { name } = req.wallet;
     const user_id = req.params.user_id;
     const { nama_agen, bank, no_rekening, jumlah, keterangan, status } =
@@ -21,7 +20,7 @@ const ajukanPenarikan = async (req, res) => {
       no_rekening: no_rekening,
       jumlah: jumlah,
       keterangan: keterangan,
-      bukti_transfer: bukti,
+      bukti_transfer: null,
       status: status,
       tipe: "pengajuan",
       created_at: Date.now(),
@@ -214,10 +213,10 @@ const daftarPengajuan = async (req, res) => {
     const data = await Activities.find();
     const daftarData = { ...data._doc };
 
-    if (!tipe || !status) {
+    if (!tipe && !status) {
       daftarData.tipe = "pengajuan";
       daftarData.status = ["ditolak", "lunas"];
-    } else if (tipe || status) {
+    } else if (tipe && status) {
       daftarData.tipe = "pengajuan";
       daftarData.status = status;
     }
@@ -273,19 +272,23 @@ const daftarPengajuanById = async (req, res) => {
 
 const ubahPengajuan = async (req, res) => {
   try {
+    const bukti = req.file.originalname;
+
     const id = req.params.withdraw_id;
-
-    const { status, bukti_transfer } = req.body;
     const { uid } = req.user;
+    const { status } = req.body;
+    let newStatus = status;
 
-    const ubah_pengajuan = await Activities.updateOne(
-      { id: id },
-      {
-        status: status,
-        bukti_transfer: bukti_transfer,
-        updated_by: uid,
-      }
-    );
+    const ubah_pengajuan = await Activities.findByIdAndUpdate(id, {
+      status: newStatus,
+      bukti_transfer: bukti,
+      updated_by: uid,
+    });
+    if (status === "pending") {
+      newStatus = "ajukan_proses";
+    } else if (status === "ajukan lunas") {
+      $or: [{ newStatus: "lunas" }, { newStatus: "ditolak" }];
+    }
 
     res.status(200).json({
       status: "200",
@@ -299,6 +302,26 @@ const ubahPengajuan = async (req, res) => {
     });
   }
 };
+
+// const ubahPengajuan = async (req, res) => {
+//   try {
+//     const bukti = req.file.originalname;
+//     const id = req.params.withdraw_id;
+//     const { status, bukti_transfer } = req.body;
+//     const { uid } = req.user;
+
+//     let newStatus = status; // Menggunakan nilai status yang ada
+//     if (status === "proses") {
+//       newStatus = "ajukan_lunas"; // Jika status adalah "proses", maka ubah menjadi "ajukan_lunas"
+//     } else if (status === "pending") {
+//       newStatus = "ajukan_proses"; // Jika status adalah "pending", maka ubah menjadi "ajukan_proses"
+//     }
+
+//     const ubah_pengajuan = await Activities.updateOne(
+//       { _id: id },
+//       {
+//         status: newStatus,
+//         bukti_transfer:
 
 // ambil 5 aktivitas terakhir berdasarkan user id
 // router.get("/riwayatTerakhir/:user_id", auth.Verify, ctl.getLastActivities);

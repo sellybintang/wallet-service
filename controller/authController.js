@@ -20,7 +20,13 @@ const register = async (req, res) => {
       address,
       no_telp,
     });
-
+    const roles = [1, 2, 3];
+    if (!roles.includes(role)) {
+      return res.status(400).json({
+        status: "400",
+        message: "role tidak tersedia",
+      });
+    }
     res.status(200).json({
       status: "200",
       message: "Successfully created a new user",

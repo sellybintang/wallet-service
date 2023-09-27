@@ -36,14 +36,7 @@ router.post(
 );
 
 // membuat aktivitas bertipe kredit dengan var { jumlah, keterangan } dari body
-router.post(
-  "/kredit/:user_id",
-  upload.single("bukti_transfer"),
-  auth,
-  isUser_Agen,
-  walletUser,
-  kredit
-);
+router.post("/kredit/:user_id", auth, isUser_Agen, walletUser, kredit);
 
 router.post(
   "/debit/:user_id",
@@ -54,7 +47,13 @@ router.post(
   debit
 );
 
-router.patch("/ubahPengajuan/:withdraw_id", auth, isAdmin, ubahPengajuan);
+router.patch(
+  "/ubahPengajuan/:withdraw_id",
+  upload.single("bukti_transfer"),
+  auth,
+  isAdmin,
+  ubahPengajuan
+);
 
 router.get("/dataPengajuan/:withdraw_id", auth, isAdmin, dataPengajuan);
 
