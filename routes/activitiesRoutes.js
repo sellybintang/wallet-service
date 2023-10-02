@@ -11,6 +11,8 @@ const {
   riwayatMasuk,
   riwayatKeluar,
   riwayatPengajuan,
+  ubahKredit,
+  ubahDebit,
 } = require("../controller/activitiesController");
 
 const {
@@ -55,6 +57,9 @@ router.patch(
   ubahPengajuan
 );
 
+// router.patch("/ubahKredit/:withdraw_id", auth, isAdmin, ubahKredit);
+
+router.patch("/ubahDebit/:withdraw_id", auth, isAdmin, walletUser, ubahDebit);
 router.get("/dataPengajuan/:withdraw_id", auth, isAdmin, dataPengajuan);
 
 router.get("/daftarPengajuan/", auth, isAdmin, daftarPengajuan);

@@ -303,26 +303,6 @@ const ubahPengajuan = async (req, res) => {
   }
 };
 
-// const ubahPengajuan = async (req, res) => {
-//   try {
-//     const bukti = req.file.originalname;
-//     const id = req.params.withdraw_id;
-//     const { status, bukti_transfer } = req.body;
-//     const { uid } = req.user;
-
-//     let newStatus = status; // Menggunakan nilai status yang ada
-//     if (status === "proses") {
-//       newStatus = "ajukan_lunas"; // Jika status adalah "proses", maka ubah menjadi "ajukan_lunas"
-//     } else if (status === "pending") {
-//       newStatus = "ajukan_proses"; // Jika status adalah "pending", maka ubah menjadi "ajukan_proses"
-//     }
-
-//     const ubah_pengajuan = await Activities.updateOne(
-//       { _id: id },
-//       {
-//         status: newStatus,
-//         bukti_transfer:
-
 // ambil 5 aktivitas terakhir berdasarkan user id
 // router.get("/riwayatTerakhir/:user_id", auth.Verify, ctl.getLastActivities);
 
@@ -440,10 +420,95 @@ const riwayatPengajuan = async (req, res) => {
   }
 };
 
+// const ubahKredit = async(req, res)=>{
+//   try{
+
+//   }catch(error){
+//     res.status(500).json({
+//       status: "500",
+//       message: error.message,
+//     });
+//   }
+// }
+
+// const ubahKredit = async (req, res) => {
+//   try {
+//     // const bukti = req.file.originalname;
+
+//     const id = req.params.withdraw_id;
+//     const { uid } = req.user;
+//     const { status } = req.body;
+//     let newStatus = status;
+
+//     const ubah_pengajuan = await Activities.findByIdAndUpdate(id, {
+//       status: newStatus,
+//       // bukti_transfer: bukti,
+//       updated_by: uid,
+//     });
+//     if (status === "ajukan lunas") {
+//       $or: [{ newStatus: "lunas" }, { newStatus: "ditolak" }];
+//     }
+
+//     res.status(200).json({
+//       status: "200",
+//       message: "Berhasil merubah data pengajuan berdasarkan Id",
+//       ubah_pengajuan,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       status: "500",
+//       message: error.message,
+//     });
+//   }
+// };
+
+// const ubahDebit = async (req, res) => {
+//   try {
+//     // const bukti = req.file.originalname;
+//     const id = req.params.withdraw_id;
+//     const withdraw = await Activities.findById(id);
+//     console.log(withdraw);
+//     const { updateBalance, balance } = req.wallet;
+
+//     const jumlah = withdraw.jumlah;
+//     const updateJumlah = balance + jumlah;
+
+//     const { uid } = req.user;
+//     const { status } = req.body;
+//     let newStatus = status;
+//     console.log(updateJumlah);
+
+//     const update_balance = await updateBalance.updateOne({
+//       balance: updateJumlah,
+//     });
+
+//     const ubah_pengajuan = await Activities.findByIdAndUpdate(id, {
+//       status: newStatus,
+//       // bukti_transfer: bukti,
+//       updated_by: uid,
+//     });
+//     if (status === "ajukan lunas") {
+//       $or: [{ newStatus: "lunas", update_balance }, { newStatus: "ditolak" }];
+//     }
+
+//     res.status(200).json({
+//       status: "200",
+//       message: "Berhasil merubah data pengajuan berdasarkan Id",
+//       ubah_pengajuan,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       status: "500",
+//       message: error.message,
+//     });
+//   }
+// };
 module.exports = {
   ajukanPenarikan,
   kredit,
   debit,
+  // ubahKredit,
+  ubahDebit,
   dataPengajuan,
   daftarPengajuan,
   daftarPengajuanById,

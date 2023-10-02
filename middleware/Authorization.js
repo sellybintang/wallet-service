@@ -52,7 +52,7 @@ const auth = async (req, res, next) => {
 
 const isUser_Agen = (req, res, next) => {
   try {
-    if (req.user.role === "1" || req.user.role === "2") {
+    if (req.user.role === 1 || req.user.role === 2) {
       next();
     } else {
       return res.status(401).json({
@@ -69,7 +69,7 @@ const isUser_Agen = (req, res, next) => {
 };
 const isUser = (req, res, next) => {
   try {
-    if (req.user.role === "1") {
+    if (req.user.role === 1) {
       next();
     } else {
       return res.status(401).json({
@@ -87,7 +87,7 @@ const isUser = (req, res, next) => {
 
 const isAgen = (req, res, next) => {
   try {
-    if (req.user.role === "2") {
+    if (req.user.role === 2) {
       next();
     } else {
       return res.status(401).json({
@@ -105,7 +105,7 @@ const isAgen = (req, res, next) => {
 
 const isAdmin = async (req, res, next) => {
   try {
-    if (req.user.role === "3") {
+    if (req.user.role === 3) {
       next();
     } else {
       return res.status(401).json({
